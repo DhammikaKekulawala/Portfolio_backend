@@ -28,7 +28,9 @@ def home():
 @app.route('/contact', methods=['POST'])
 def contact():
     try:
+        print("xx")
         data = request.get_json()
+        print(data)
         
         # Validate required fields
         required_fields = ['name', 'email', 'subject', 'message']
