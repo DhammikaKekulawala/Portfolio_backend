@@ -9,6 +9,9 @@ __pycache__/
 # vatual environment
 venv
 
+# .env file
+.env
+
 # Distribution / packaging
 .Python
 build/
