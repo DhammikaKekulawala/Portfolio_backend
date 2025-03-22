@@ -31,6 +31,9 @@ def contact():
         print("xx")
         data = request.get_json()
         print(data)
+        print(EMAIL_ADDRESS)
+        print(EMAIL_PASSWORD)
+        print(RECIPIENT_EMAIL)
         
         # Validate required fields
         required_fields = ['name', 'email', 'subject', 'message']
@@ -71,6 +74,32 @@ def contact():
     except Exception as e:
         # Log error
         logger.error(f"Error processing contact form: {str(e)}")
+        return jsonify({"error": "An error occurred processing your request."}), 500
+# Simple database-free subscriber feature
+subscribers = []
+
+@app.route('/subscribe', methods=['POST'])
+def subscribe():
+    try:
+        data = request.get_json()
+        
+        # Validate email
+        email = data.get('email')
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+        
+        # Check if already subscribed
+        if email in subscribers:
+            return jsonify({"message": "You're already subscribed!"}), 200
+        
+        # Add to subscribers
+        subscribers.append(email)
+        logger.info(f"New subscriber: {email}")
+        
+        return jsonify({"message": "Subscribed successfully!"}), 200
+    
+    except Exception as e:
+        logger.error(f"Error processing subscription: {str(e)}")
         return jsonify({"error": "An error occurred processing your request."}), 500
 
 if __name__ == '__main__':
